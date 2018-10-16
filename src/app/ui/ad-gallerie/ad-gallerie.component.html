@@ -1,0 +1,73 @@
+<app-ad-search [customBookFilter]="customBookFilter"></app-ad-search>
+<div class="container">
+  <div class="filtersBtn">
+    <button class="btn btn-info btn-sm btn-full-width more " *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed"
+      [attr.aria-expanded]="!filtersCollapsed">
+        <i class="fa fa-plus"></i>
+          Filter
+      </button>
+
+    <button class="btn btn-info btn-sm hide" *ngIf="filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" [attr.aria-expanded]="!filtersCollapsed">
+        <i class="fa fa-minus"></i>
+         Filters
+      </button>
+  </div>
+  <div *ngIf="filtersCollapsed" class="form-group selectFilters">
+    <select class="form-control-sm" type="text" [(ngModel)]="customBookFilter.categories">
+      <option value="">Category</option>
+      <option *ngFor="let category of uniqueCategoriesItems" value="{{category}}">{{category}}</option>
+    </select>
+    <select class="form-control-sm" type="text" [(ngModel)]="customBookFilter.language">
+          <option value="">Language</option>
+          <option value="ar">Arabic</option>
+          <option value="fr">French</option>
+          <option value="en">English</option>
+      </select>
+  </div>
+  <section class="wrapper">
+    <div class="container-fostrap">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4" *ngFor="let book of (allBooks | search:customBookFilter.title| search:customBookFilter.categories 
+      | search:customBookFilter.authors | language:customBookFilter.language | search:customBookFilter.publisher)">
+              <div class="card">
+                <a class="img-card" href="#">
+                  <img *ngIf="book.volumeInfo.imageLinks==undefined" src="./assets/image/No-image-available.jpg" alt="image-books" />
+                  <img *ngIf="book.volumeInfo.imageLinks!==undefined" src="{{book.volumeInfo.imageLinks.thumbnail}}" />
+              </a>
+                <div class="card-content">
+                  <h4 class="card-title">
+                    <a href="#" *ngIf="book.volumeInfo.title!==undefined"> {{book.volumeInfo.title}}</a>
+                    <a href="#" *ngIf="book.volumeInfo.title==undefined"> No Title</a>
+                  </h4>
+                  <h5>
+                    <p *ngIf="book.volumeInfo.authors!==undefined"> <label class="sub-title">Authors</label> {{book.volumeInfo.authors}}</p>
+                    <p href="#" *ngIf="book.volumeInfo.authors==undefined"> No Authors</p>
+                  </h5>
+                  <h6>
+                    <p *ngIf="book.volumeInfo.publisher!==undefined"> <label class="sub-title">Publisher:</label> {{book.volumeInfo.publisher}}</p>
+                    <p href="#" *ngIf="book.volumeInfo.publisher==undefined"> No Publisher</p>
+                  </h6>
+                  <h6>
+                    <p *ngIf="book.volumeInfo.language!==undefined"> <label class="sub-title">Language: </label> {{book.volumeInfo.language}}</p>
+                    <p href="#" *ngIf="book.volumeInfo.language==undefined"> No Language</p>
+                  </h6>
+                  <p class="card-text" *ngIf="book.volumeInfo.description==undefined">
+                    No Description
+                  </p>
+                  <p class="card-text" *ngIf="book.volumeInfo.description!=undefined">
+                    {{book.volumeInfo.description}}
+                  </p>
+                </div>
+                <div class="card-read-more">
+                  <button class="btn btn-md btn-link btn-block" (click)="openModal(book)">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

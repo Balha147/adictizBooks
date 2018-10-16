@@ -1,0 +1,9 @@
+<app-layout>
+    <div class="started">
+        <h1><label *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" [attr.aria-expanded]="!filtersCollapsed"> Welcome to AdictizBooks</label>            </h1>
+
+        <h2><a *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" [attr.aria-expanded]="!filtersCollapsed"
+                routerLink="/search">Get Started</a></h2>
+    </div>
+</app-layout>
+<router-outlet></router-outlet>
